@@ -1,38 +1,44 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, View, FlatList } from 'react-native';
+import GoalItem from './components/GoalItem';
+import GoalInput from './components/GoalInput';
 
-// Define the component as a React Functional Component with TypeScript
-const App: React.FC = () => {
+const App = () => {
+
+  const [courseGoals, setCourseGoals] = useState<{ text: string; key: string }[]>([]);
+
+  const addGoalHandler = (enteredGoalText: string) => {
+    if (enteredGoalText.trim() !== '') {
+      setCourseGoals((currentCourseGoals) => [...currentCourseGoals, { text: enteredGoalText.trim(), key: Math.random().toString() }]);
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.dummyText}>Another piece of text!</Text>
+    <View style={styles.appContainer}>
+      <GoalInput onAddGoal={addGoalHandler} />
+      <View style={styles.goalsContainer}>
+        <FlatList
+          alwaysBounceVertical={false}
+          data={courseGoals}
+          keyExtractor={(item) => item.key}
+          renderItem={({ item }) => (
+            <GoalItem text={item.text} />
+          )}
+        />
       </View>
-      <Text style={styles.dummyText}>Hello World!</Text>
-      <Text style={styles.dummyText}>{add(1,3)}</Text>
-      <Button title="Tap Me!" onPress={() => alert('Button pressed!')} />
     </View>
   );
 };
 
-function add(num1: number, num2: number) {
-  return num1 + num2;
-}
+export default App;
 
-// Define the styles using StyleSheet
 const styles = StyleSheet.create({
-  container: {
+  appContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 70,
+    paddingHorizontal: 30
   },
-  dummyText: {
-    margin: 16,
-    borderWidth: 2,
-    borderColor: 'red',
-    padding: 16,
+  goalsContainer: {
+    flex: 5,
   },
 });
-
-export default App;
