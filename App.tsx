@@ -1,28 +1,52 @@
 import { useState } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Button } from 'react-native';
 import GoalItem from './components/GoalItem';
 import GoalInput from './components/GoalInput';
 
 const App = () => {
+  const [modalIsVisable, setModalIsVisible] = useState(false);
+  const [courseGoals, setCourseGoals] = useState<{ text: string; id: string }[]>([]);
 
-  const [courseGoals, setCourseGoals] = useState<{ text: string; key: string }[]>([]);
+  const startAddGoalHandler = () => {
+    setModalIsVisible(true);
+  };
+
+  const endAddGoalHandler = () => {
+    setModalIsVisible(false);
+  };
 
   const addGoalHandler = (enteredGoalText: string) => {
     if (enteredGoalText.trim() !== '') {
-      setCourseGoals((currentCourseGoals) => [...currentCourseGoals, { text: enteredGoalText.trim(), key: Math.random().toString() }]);
+      setCourseGoals((currentCourseGoals) => [...currentCourseGoals, { text: enteredGoalText.trim(), id: Math.random().toString() }]);
+      setModalIsVisible(false);
     }
+  };
+
+  const deleteGoalHander = (id: string) => {
+    setCourseGoals(currentCourseGoals => {
+      return currentCourseGoals.filter((goal) => goal.id !== id);
+    });
   };
 
   return (
     <View style={styles.appContainer}>
-      <GoalInput onAddGoal={addGoalHandler} />
+      <Button title='Add New Goal' color="#5e0acc" onPress={startAddGoalHandler} />
+      <GoalInput
+        isModalVisable={modalIsVisable}
+        onAddGoal={addGoalHandler}
+        onCancel={endAddGoalHandler}
+      />
       <View style={styles.goalsContainer}>
         <FlatList
           alwaysBounceVertical={false}
           data={courseGoals}
-          keyExtractor={(item) => item.key}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <GoalItem text={item.text} />
+            <GoalItem
+              text={item.text}
+              id={item.id}
+              onDeleteItem={deleteGoalHander}
+            />
           )}
         />
       </View>
