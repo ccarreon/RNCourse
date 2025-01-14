@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, View, FlatList, Button } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+
 import GoalItem from './components/GoalItem';
 import GoalInput from './components/GoalInput';
 
@@ -29,28 +31,33 @@ const App = () => {
   };
 
   return (
-    <View style={styles.appContainer}>
-      <Button title='Add New Goal' color="#5e0acc" onPress={startAddGoalHandler} />
-      <GoalInput
-        isModalVisable={modalIsVisable}
-        onAddGoal={addGoalHandler}
-        onCancel={endAddGoalHandler}
-      />
-      <View style={styles.goalsContainer}>
-        <FlatList
-          alwaysBounceVertical={false}
-          data={courseGoals}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <GoalItem
-              text={item.text}
-              id={item.id}
-              onDeleteItem={deleteGoalHander}
-            />
-          )}
+    <>
+      <StatusBar style="light" />
+      <View style={styles.appContainer}>
+        <View style={styles.buttonContainer}>
+          <Button title='Add New Goal' color="#a065ec" onPress={startAddGoalHandler} />
+        </View>
+        <GoalInput
+          isModalVisable={modalIsVisable}
+          onAddGoal={addGoalHandler}
+          onCancel={endAddGoalHandler}
         />
+        <View style={styles.goalsContainer}>
+          <FlatList
+            alwaysBounceVertical={false}
+            data={courseGoals}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <GoalItem
+                text={item.text}
+                id={item.id}
+                onDeleteItem={deleteGoalHander}
+              />
+            )}
+          />
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
@@ -59,10 +66,13 @@ export default App;
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
-    paddingTop: 70,
-    paddingHorizontal: 30
+    paddingTop: 80,
+    paddingHorizontal: 30,
   },
   goalsContainer: {
     flex: 5,
   },
+  buttonContainer: {
+    marginBottom: 16
+  }
 });
