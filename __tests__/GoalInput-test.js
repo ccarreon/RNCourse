@@ -46,7 +46,6 @@ describe('<GoalInput />', () => {
         expect(mockOnAddGoal).toHaveBeenCalledWith('Learn React Native');
     });
 
-
     test('clears the TextInput after Add Goal is pressed', () => {
         const { getByText, getByPlaceholderText } = render(
             <GoalInput isModalVisable={true} onAddGoal={() => { }} onCancel={() => { }} />
