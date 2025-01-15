@@ -26,9 +26,13 @@ const GoalInput = (props: GoalInputProps) => {
     };
 
     return (
-        <Modal visible={props.isModalVisable} animationType="slide">
+        <Modal visible={props.isModalVisable} animationType="slide" testID='goal-input-modal'>
             <View style={styles.inputContainer}>
-                <Image style={styles.image} source={require('../assets/images/goal.png')} />
+                <Image
+                    style={styles.image}
+                    source={require('../assets/images/goal.png')}
+                    testID="goal-image"
+                />
                 <TextInput
                     style={styles.textInput}
                     placeholder="Your course goal!"
